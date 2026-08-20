@@ -1,6 +1,7 @@
 # BCH Software Inc. - Enterprise Engineering Repository
 
 Welcome to your team's official codebase for the current development cycle.
+# 8/20
 
 ## 🚀 Active Sprint: Sprint 1 - Client Kiosk Deployment
 * **Client:** Apex Entertainment / BCH Community Kiosk Services
