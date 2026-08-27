@@ -15,4 +15,14 @@ print("| Attendee: "+name.ljust(26) +"|")
 print("| Dept: "+department.ljust(30)+"|")
 print("| Contact: "+email.ljust(27)+"|")
 print("| Access: "+access .ljust(28)+"|")
+<<<<<<< Updated upstream
 print("|-------------------------------------|")
+=======
+print("|-------------------------------------|")
+print("|---------------------------------------------------------|")
+print("| Attendee: "+name.ljust(46) +"|")
+print("| Dept: "+department.ljust(50)+"|")
+print("| Contact: "+email.ljust(47)+"|")
+print("| Access: "+access .ljust(48)+"|")
+print("|---------------------------------------------------------|")
+>>>>>>> Stashed changes
