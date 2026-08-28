@@ -10,7 +10,6 @@ print("what is your email")
 email= input()
 print("Enter your access")
 access=input()
-
 print("|---------------------------------------------------------|")
 print("| Attendee: "+name.ljust(46) +"|")
 print("| Dept: "+department.ljust(50)+"|")
