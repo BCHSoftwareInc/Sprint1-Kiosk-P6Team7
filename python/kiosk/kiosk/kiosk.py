@@ -11,6 +11,8 @@ email= input()
 print("Enter your access")
 access=input()
 
+print("___________________________________________________________")
+print("|----------------Welcome to BCH Software------------------|")
 print("|---------------------------------------------------------|")
 print("| Attendee: "+name.ljust(46) +"|")
 print("| Dept: "+department.ljust(50)+"|")
