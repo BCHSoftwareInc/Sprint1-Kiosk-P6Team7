@@ -1,4 +1,5 @@
 print("what is your name?")
+print("welcome")
 name= input()
 print("what is your Department")
 print("Software Developer")
@@ -10,6 +11,12 @@ print("what is your email")
 email= input()
 print("Enter your access")
 access=input()
+<<<<<<< HEAD
+=======
+
+print("___________________________________________________________")
+print("|----------------Welcome to BCH Software------------------|")
+>>>>>>> origin/main
 print("|---------------------------------------------------------|")
 print("| Attendee: "+name.ljust(46) +"|")
 print("| Dept: "+department.ljust(50)+"|")
