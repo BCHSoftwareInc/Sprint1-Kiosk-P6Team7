@@ -1,81 +1,71 @@
 """
-CCA - Security & Safety Test Suite (Sprint 2, Story 4)
-Run from the project folder with:   pytest -v tests/test_cca_security.py
-
-DAY 1: you are auditing the AI-suggested code. Leave the import below as-is.
-       Every FAILED test is a bug you found - write each one up as a GitHub issue.
-DAY 2: change the import to   from gate_rules import check_entry
-       and re-run against your team's real code. The goal is all green.
+QA - Boundary Test Suite (Sprint 2, Story 3)
+Run from the project folder with:   pytest -v
+Each test = one row of your QA Test Matrix.
 
 HOW TO FINISH A TODO TEST
   1. Delete the pytest.skip(...) line.
-  2. Write ONE assert line, copying the pattern from the C1/C2 examples.
+  2. Write ONE assert line, copying the pattern from the Q1/Q2 examples.
+  3. Run pytest again. Skipped = yellow, passed = green, failed = red.
 """
 import pytest
-from ai_suggested_gate import check_entry   # <- Day 1 audit target. Day 2: from gate_rules import check_entry
+from gate_rules import check_entry
 from turnstile_gate import TurnstileGate
 
 
-# ---------- Safety rules nobody can bypass ----------
-def test_c1_vip_cannot_skip_height_rule():
-    assert check_entry("VIP", 40, 30, False) == "DENIED_TOO_SHORT"
+# ---------- Height boundary (48 inches) ----------
+def test_q1_patron_exactly48_inches_age13_is_granted():
+    assert check_entry("PATRON", 48, 13, False) == "GRANTED"
 
-def test_c2_tall_kid_without_guardian_is_denied():
-    # The AND/OR trap from Spot the Slop Lab 1
-    assert check_entry("PATRON", 60, 10, False) == "DENIED_NEEDS_GUARDIAN"
+def test_q2_patron47point9_inches_is_too_short():
+    assert check_entry("PATRON", 47.9, 30, False) == "DENIED_TOO_SHORT"
 
-def test_c3_short_teenager_is_denied():
-    # The other half of the AND/OR trap
-    # TODO (C3): ticket "PATRON", height 45, age 15, guardian False  ->  expect "DENIED_TOO_SHORT"
-    assert check_entry("PATRON",45,15, False) == "DENIED_TOO_SHORT"
-
-def test_c4_guardian_cannot_override_height():
-    # TODO (C4): ticket "PATRON", height 40, age 8, guardian True  ->  expect "DENIED_TOO_SHORT"
-    assert check_entry("PATRON",40,8,True) == "DENIED_TOO_SHORT"
-
-def test_c5_unauthorized_with_guardian_still_denied():
-    # TODO (C5): ticket "UNAUTHORIZED", height 60, age 30, guardian True  ->  expect "DENIED_NO_TICKET"
-    assert check_entry("UNAUTHORIZED", 60,30,True) == "DENIED_NO_TICKET"
+def test_q3_patron48point1_inches_is_granted():
+    # TODO (Q3): ticket "PATRON", height 48.1, age 30, guardian False  ->  expect ??? (look it up in the Rules table)
+    assert check_entry("PATRON", 48.1, 30, False) == "GRANTED"
 
 
-# ---------- Bad or tampered ticket data ----------
-def test_c6_blank_ticket_is_denied():
-    # TODO (C6): ticket "", height 60, age 30, guardian False  ->  expect "DENIED_NO_TICKET"
-    assert check_entry("",60,30,False) == "DENIED_NO_TICKET"
+# ---------- Age boundary (13) ----------
+def test_q4_age12_without_guardian_needs_guardian():
+    # TODO (Q4): ticket "PATRON", height 60, age 12, guardian False  ->  expect ??? (look it up in the Rules table)
+    assert check_entry("PATRON", 60, 12, False) == "DENIED_NEEDS_GUARDIAN"
 
-def test_c7_missing_ticket_is_denied():
-    # TODO (C7): ticket None, height 60, age 30, guardian False  ->  expect "DENIED_NO_TICKET"
-    assert check_entry("None",60,30,False) == "DENIED_NO_TICKET"
+def test_q5_age12_with_guardian_is_granted():
+    # TODO (Q5): ticket "PATRON", height 60, age 12, guardian True  ->  expect ??? (look it up in the Rules table)
+    assert check_entry("PATRON", 60, 12, True) == "GRANTED"
 
-def test_c8_lowercase_ticket_is_not_a_real_code():
-    # TODO (C8): ticket "vip", height 60, age 30, guardian False  ->  expect "DENIED_NO_TICKET"
-    assert check_entry("vip",60,30,False) == "DENIED_NO_TICKET"
+def test_q6_age13_without_guardian_is_granted():
+    # TODO (Q6): ticket "PATRON", height 60, age 13, guardian False  ->  expect ??? (look it up in the Rules table)
+    assert check_entry("PATRON", 60, 13, False) == "GRANTED"
 
 
-# ---------- Impossible measurements ----------
-def test_c9_negative_height_is_invalid():
-    # TODO (C9): ticket "PATRON", height -5, age 30, guardian False  ->  expect "DENIED_INVALID"
-    assert check_entry("PATRON",-5,30,False) == "DENIED_INVALID"
+# ---------- Ticket types ----------
+def test_q7_vip_normal_rider_gets_vip_lane():
+    # TODO (Q7): ticket "VIP", height 60, age 30, guardian False  ->  expect ??? (look it up in the Rules table)
+    assert check_entry("VIP", 60, 30, False) == "GRANTED"
 
-def test_c10_zero_height_is_invalid():
-    # TODO (C10): ticket "PATRON", height 0, age 30, guardian False  ->  expect "DENIED_INVALID"
-    assert check_entry("PATRON",0,30,False) == "DENIED_INVALID"
+def test_q8_unauthorized_is_denied():
+    # TODO (Q8): ticket "UNAUTHORIZED", height 60, age 30, guardian False  ->  expect ??? (look it up in the Rules table)
+    assert check_entry("UNAUTHORIZED", 60, 30, False) == "DENIED_NO_TICKET"
 
-def test_c11_giant_height_is_invalid():
-    # TODO (C11): ticket "PATRON", height 500, age 30, guardian False  ->  expect "DENIED_INVALID"
-    assert check_entry("PATRON",500,30,False) == "DENIED_INVALID"
+def test_q9_top_of_valid_range_is_granted():
+    # TODO (Q9): ticket "PATRON", height 96, age 120, guardian False  ->  expect ??? (look it up in the Rules table)
+    assert check_entry("PATRON", 96, 120, False) == "DENIED_INVALID"
 
-def test_c12_negative_age_is_invalid():
-    # TODO (C12): ticket "PATRON", height 60, age -1, guardian False  ->  expect "DENIED_INVALID"
-    assert check_entry("PATRON",60,-1,False) == "DENIED_INVALID"
+def test_q10_vip_child_with_guardian_gets_vip_lane():
+    # TODO (Q10): ticket "VIP", height 60, age 12, guardian True  ->  expect ??? (look it up in the Rules table)
+    assert check_entry("VIP", 60, 12, True) == "GRANTED"
 
-def test_c13_impossible_age_is_invalid():
-    # TODO (C13): ticket "PATRON", height 60, age 999, guardian False  ->  expect "DENIED_INVALID"
-    assert check_entry("PATRON",60,999,False) == "DENIED_INVALID"
+# ---------- Analytics counters (runs once SE finishes Story 2) ----------
+def test_q11_new_gate_starts_at_zero():
+    # TODO (Q11): make a TurnstileGate(), then assert granted_count, denied_count
+    #             and total_scans() are all 0
+    pytest.skip("TODO - write this test")
 
-# ---------- Analytics integrity (DAY 2 - uses your team's real gate) ----------
-def test_c14_invalid_scan_counts_as_denied_not_granted():
+def test_q12_counters_after_two_grants_and_one_deny():
     gate = TurnstileGate()
-    gate.scan("PATRON", -5, 30, False)
-    # TODO (C14, Day 2): assert granted_count is 0 and denied_count is 1
+    gate.scan("PATRON", 60, 30, False)   # granted
+    gate.scan("VIP", 60, 30, False)      # granted
+    gate.scan("PATRON", 40, 30, False)   # denied
+    # TODO (Q12): assert granted_count is 2, denied_count is 1, total_scans() is 3
     pytest.skip("TODO - write this test")
