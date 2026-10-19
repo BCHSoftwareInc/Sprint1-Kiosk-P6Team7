@@ -16,10 +16,16 @@ def check_entry(ticket_type, height_in, age, has_guardian):
         return "DENIED_NO_TICKET"
 
     # Rider must be tall enough or old enough
-    if height_in >= 48 or age >= 13:
+    if height_in >= 48 
         return "GRANTED"
+    else:
+        return "DENIED_TOO_SHORT"
 
-    if has_guardian:
+    if age >= 13:
         return "GRANTED"
-
-    return "DENIED_TOO_SHORT"
+    else:
+        if has_gaurdian:
+            return "GRANTED"
+        else:
+            return "DENIED_NO_GUARDIAN"
+   
